@@ -4,36 +4,19 @@
 
 ## 🎯 Project North Star
 
-**What**: Voice-first AI that thinks continuously alongside you, creating genuine cognitive partnership through transparent AI cognition.
+**What**: A persistent and available voice-first AI companion that knows you deeply - remembering your conversations, understanding your intent, and acting on your behalf in the digital world.
 
 **Why**: 
-- **Human cognition is naturally continuous and associative, but current tools like keyboards and screens force it to be discrete and linear**
-- **True cognitive partnership requires data sovereignty** - You can never fully trust a thought partner controlled by a corporate entity, limiting the depth of collaboration possible
+- **Audio first** - Speaking is thinking. Current AI interfaces break your flow with typing, clicking, waiting. Voice preserves the natural stream of consciousness.
+- **Data sovereignty** - You can't share your deepest thoughts with a system someone else controls. Full ownership means full trust.
+- **Understands you** - Unlike session-based chatbots, every conversation builds on the last. Your companion accumulates years of context, learning not just your preferences but who you are and how to best fit into your life.
+- **Completely trainable** - seamless feedback to correct misunderstandings, reinforce behaviors you like, teach it your communication style. You're not just using a tool - you're training a companion.
+- **Complete transparency** - You see what it understood, what information it gathered, every step in its thought process visible and correctable. No mysteries, just clear traceable reasoning.
+- **Digital proxy** - The internet is full of forms, emails, bookings, and busy work. Your companion handles it all at machine speed while you stay in your flow. It's not just thinking with you - it's doing the digital chores so you don't have to.
 
-**Demo Target**: September 2025 - Live demonstration of AI that develops opinions, interrupts proactively, and manages knowledge autonomously.
-
-## 🚧 Current Status & Immediate Priorities
-
-### Working
-- ✅ Repository structure established
-- ✅ React PWA shell with package.json
-- ✅ Stream contracts defined
-- ✅ Architecture documented
-
-### Immediate Blocker (FOCUS HERE)
-- 🔴 **WebRTC audio capture in React → WebSocket to Node.js API Gateway**
-  - Need: Implement MediaStream API in React
-  - Need: WebSocket connection to API Gateway
-  - Need: Base64 audio chunk streaming
-
-### Next Steps (After Blocker)
-1. API Gateway WebSocket handler for audio streams
-2. Audio archival to database
-3. STT service integration (Whisper)
-4. Basic round-trip: speak → transcribe → echo back text
+**Demo Target**: September 2025 - Grand Rapids Tech Week - Showcase Extended Cognition as a useful thinking companion in meeting people and furthering my intent to advocate for and connect with contributors to this project.
 
 ## 🏗️ Architecture
-
 ### Layer-Based Pipeline Design
 ```
                               ┌─────────┐
@@ -83,9 +66,6 @@
       └──────────conversation──────────┴──────────────────────────────────────┘
                      stream
 ```
-
-
-
 ### Architectural Layers
 
 | Layer | Purpose | Modules |
@@ -161,6 +141,26 @@ The conversation stream is the unified flow back to the device, containing the c
   "audio_response": "base64_tts_audio"
 }
 ```
+
+## 🚧 Current Status & Immediate Priorities
+
+### Working
+- ✅ Repository structure established
+- ✅ React PWA shell with package.json
+- ✅ Stream contracts defined
+- ✅ Architecture documented
+
+### Immediate Blocker (FOCUS HERE)
+- 🔴 **WebRTC audio capture in React → WebSocket to Node.js API Gateway**
+  - Need: Implement MediaStream API in React
+  - Need: WebSocket connection to API Gateway
+  - Need: Base64 audio chunk streaming
+
+### Next Steps (After Blocker)
+1. API Gateway WebSocket handler for audio streams
+2. Audio archival to database
+3. STT service integration (Whisper)
+4. Basic round-trip: speak → transcribe → echo back text
 
 ## 🛠️ Technology Stack
 
