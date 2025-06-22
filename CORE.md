@@ -1,0 +1,373 @@
+# Extended Cognition Core Project Document
+
+> **Single Source of Truth** - Last Updated: June 21, 2025
+
+## 🎯 Project North Star
+
+**What**: Voice-first AI that thinks continuously alongside you, creating genuine cognitive partnership through transparent AI cognition.
+
+**Why**: 
+- **Human cognition is naturally continuous and associative, but current tools like keyboards and screens force it to be discrete and linear**
+- **True cognitive partnership requires data sovereignty** - You can never fully trust a thought partner controlled by a corporate entity, limiting the depth of collaboration possible
+
+**Demo Target**: September 2025 - Live demonstration of AI that develops opinions, interrupts proactively, and manages knowledge autonomously.
+
+## 🚧 Current Status & Immediate Priorities
+
+### Working
+- ✅ Repository structure established
+- ✅ React PWA shell with package.json
+- ✅ Stream contracts defined
+- ✅ Architecture documented
+
+### Immediate Blocker (FOCUS HERE)
+- 🔴 **WebRTC audio capture in React → WebSocket to Node.js API Gateway**
+  - Need: Implement MediaStream API in React
+  - Need: WebSocket connection to API Gateway
+  - Need: Base64 audio chunk streaming
+
+### Next Steps (After Blocker)
+1. API Gateway WebSocket handler for audio streams
+2. Audio archival to database
+3. STT service integration (Whisper)
+4. Basic round-trip: speak → transcribe → echo back text
+
+## 🏗️ Architecture
+
+### Layer-Based Pipeline Design
+```
+                              ┌─────────┐
+┌─────────────┐               │  Audio  │
+│ API Gateway ├──────────────►│ Capture │
+└─────▲───────┘               └────┬────┘
+      │                            │   ┌───────────┐
+      │                            ├───┤    STT    │
+      │                          audio └─────┬─────┘ ┌──────────────┐
+      │                            │         ├───────│Command Parser│
+      │                            │        text     └──────┬───────┘ ┌──────────────┐
+     web                           │         │           command      │   Command    │
+     RTC                           │         │              └─────────┤   Executor   │
+      │                            │         │                        └───────┬──────┘
+      │                          ┌─┴─────────┴┐                               │
+      │                          │  Semantic  │                          command verify
+      │                          │  Chunker   │                          or execution
+      │                          └─────┬──────┘                               │
+┌─────┴──────┐                         │                                      │
+│ Device PWA │                      thought                                   │
+└─────┬──────┘                         │                                      │
+      │                    ┌───────────┼──────────┬─────────────┐             │
+      │              ┌─────┴─────┐     │    ┌─────┴─────┐  ┌────┴─────┐       │
+      │              │  Context  │     │    │ Emotional │  │  Intent  │       │
+      │              │ Assembler │     │    │ Analyzer  │  │ Analyzer │       │
+      │              └─────┬─────┘     │    └─────┬─────┘  └────┬─────┘       │
+      │                    │           │          │             │             │
+      │                knowledge       │         user          user           │
+      │                 chunks         │       emotion        intent          │
+      │                    │           │          │             │             │
+      │                    └───────────┼──────────┴─────────────┘             │
+      │                                │                                      │
+      │                         ┌──────┴──────┐                               │
+      │                         │ LLM Service │                               │
+      │                         └──────┬──────┘                               │
+      │                                │                                      │
+      │                               AI                                      │
+      │                             thought                                   │
+      │                                │                                      │
+      │                          ┌─────┴──────┐                        ┌──────┴──────┐
+      │                          │ Interrupt  │                        │ TTS Service │
+      │                          │ Classifier ├───────yes──────────────┤             │
+      │                          └─────┬──────┘                        └──────┬──────┘
+      │                                │                                     audio
+      │                                no                                     │
+      │                                │                                      │
+      └──────────conversation──────────┴──────────────────────────────────────┘
+                     stream
+```
+
+
+
+### Architectural Layers
+
+| Layer | Purpose | Modules |
+|-------|---------|---------|
+| **Input Processing** | Capture and structure speech | Audio Capture, STT, Semantic Chunker |
+| **Understanding** | Extract meaning and context (thoughts only) | User Intent, Context Assembler, Emotional Analyzer |
+| **Command Processing** | Fast path for actions (bypasses understanding) | Command Parser |
+| **Cognition** | Form intelligent responses | LLM Service |
+| **Decision** | Determine appropriate actions | Interrupt Classifier, Command Verifier |
+| **Output** | Take action and respond | TTS Service, Command Executor |
+
+### Key Design Decisions
+1. **Server-side everything** - Processing power, speed, battery life constraints of mobile
+2. **Thought as atomic unit** - Each thought gets one complete AI understanding + response
+3. **Two optimized paths** - Commands (~110ms) bypass thought processing, thoughts (~650ms) get full understanding
+4. **Conversation stream as return flow** - Not a bus, but the actual flow back to device
+5. **Every module is trainable** - Personalization at every layer
+
+## 📊 Stream Contracts
+
+### conversation_stream (Return Flow)
+The conversation stream is the unified flow back to the device, containing the complete cognitive cycle for each thought:
+```json
+{
+  "thought_id": "uuid",
+  "timestamp": 1719000000000,
+  "session_id": "uuid-v4",
+  
+  // Raw inputs
+  "audio_segment": "base64_chunk",
+  "transcript": "what if we made the AI interruptible",
+  
+  // Understanding layer (all complete before LLM runs)
+  "user_intent": {
+    "interpreted_goal": "exploring system design for natural AI interruption",
+    "confidence": 0.85,
+    "topic_shift": false,
+    "relates_to": ["thought_123", "thought_456"]  // Previous related thoughts
+  },
+  
+  "rag_context": [{
+    "doc_id": "interruption_patterns",
+    "relevance": 0.92,
+    "excerpt": "Natural conversation requires..."
+  }],
+  
+  "user_emotion": {
+    "primary": "curious",
+    "energy": "high",
+    "certainty": 0.7
+  },
+  
+  "commands": [
+    {
+      "type": "create_note", 
+      "confidence": 0.78, 
+      "params": {...},
+      "needs_verification": false
+    }
+  ],
+  
+  // Cognition layer (LLM response with full context)
+  "ai_thought": {
+    "content": "This connects to their earlier idea about conversation flow",
+    "confidence": 0.87,
+    "type": "connection|question|insight|agreement|clarification|counterpoint"
+  },
+  
+  // Decision layer
+  "should_interrupt": false,
+  
+  // Output layer (only if interrupting)
+  "audio_response": "base64_tts_audio"
+}
+```
+
+## 🛠️ Technology Stack
+
+### Module Details
+
+| Module | Purpose | Output | Latency | Trainability |
+|--------|---------|--------|---------|--------------|
+| Audio Capture | Continuous mic recording | Audio stream | ~10ms | Low (hardware) |
+| STT | Convert speech to text | Transcript + confidence | ~80ms | High (vocabulary, accent) |
+| Semantic Chunker | Identify thought boundaries | Thoughts | ~20ms | High (pause patterns) |
+| User Intent | Interpret what user wants | Goal + topic analysis | ~50ms | Very High (context patterns) |
+| Context Assembler | Find relevant knowledge | RAG documents | ~100ms | High (relevance scoring) |
+| Emotional Analyzer | Detect user state | Emotion + energy | ~50ms | High (baseline calibration) |
+| Command Parser | Identify action requests | Command list | ~30ms | Very High (custom commands) |
+| LLM Service | Generate AI thoughts | AI thought + type | ~400ms | Medium (model selection) |
+| Interrupt Classifier | Decide whether to speak | yes/no decision | ~20ms | Very High (thresholds) |
+| Command Verifier | Check permissions | Verification need | ~10ms | High (trust rules) |
+| TTS Service | Generate speech (only on interrupt=yes) | Audio response | ~200ms | Medium (voice, emotion) |
+| Command Executor | Run approved commands | Action results | Varies | Low (plugin-based) |
+
+**Command Path**: ~110ms to start execution (Audio → STT → Parser)  
+**Thought Path**: ~650ms to interrupt decision (Audio → STT → Chunker → Understanding → LLM → Classifier)  
+**With TTS**: +200ms for audio response
+
+### Infrastructure
+- PostgreSQL for persistent storage (maybe)
+- S3-compatible storage for audio archive
+- Docker + Docker Compose for development
+- In-memory conversation_stream (Redis Streams optional for scaling)
+
+## 📈 Success Metrics
+
+### Technical Metrics
+- Command response: ~110ms to execution
+- Thought response: ~650ms to decision, ~850ms with TTS
+- Audio transcription accuracy: >90% (initial) → >98% (trained)
+- Concurrent users: 20+ on Mac Mini M4 Pro
+
+### Demo Capabilities (September 2025)
+- **Seamless voice interaction** - Natural conversation flow
+- **Automatic knowledge capture** - Real-time updates as you mention people/topics
+- **Proactive interruptions** - AI jumps in when it has relevant insights
+- **AI develops opinions** - Not just answering, but thinking alongside you
+
+## 🚀 Development Phases
+
+### Phase 1: Core Pipeline (Current - July 2025)
+**Goal**: Get audio flowing through the system with basic echo response
+
+- [ ] **WebRTC audio capture** in React PWA
+  - MediaStream API implementation
+  - Continuous recording with chunking
+  - Visual audio level indicator
+- [ ] **API Gateway** with WebSocket support
+  - Handle WebSocket connections
+  - Route audio chunks to services
+  - Basic JWT authentication
+- [ ] **STT integration** 
+  - Whisper model setup
+  - Stream processing of audio chunks
+  - Return transcripts with confidence
+- [ ] **Basic semantic chunking**
+  - Pause detection algorithm
+  - Thought boundary identification
+  - Create thought objects
+- [ ] **Text echo response**
+  - Return transcript to device
+  - Display in UI for verification
+  - Log conversation_stream
+
+**Milestone**: Speak → See transcript appear in <1 second
+
+### Phase 2: Intelligence Layer (August - September 2025)
+**Goal**: Add understanding, thinking, and speaking capabilities
+
+- [ ] **User Intent module**
+  - Small model for goal detection
+  - Topic tracking across thoughts
+  - Confidence scoring
+- [ ] **RAG engine integration**
+  - Vector database setup
+  - Document ingestion pipeline
+  - Context retrieval based on thoughts
+- [ ] **LLM Service**
+  - Local model deployment (VLLM)
+  - Prompt engineering for thoughts
+  - Response generation
+- [ ] **TTS integration**
+  - Voice synthesis setup
+  - Emotion in voice (future)
+  - Stream audio back to device
+- [ ] **Command Parser**
+  - Basic command recognition
+  - Fuzzy matching for variations
+  - Command execution framework
+
+**Milestone**: Have a real conversation with context from your notes
+
+### Phase 3: Cognitive Enhancement (October - November 2025)
+**Goal**: Make the AI feel like a true thought partner
+
+- [ ] **Emotional Analyzer**
+  - Audio feature extraction
+  - Text sentiment analysis
+  - User state tracking
+- [ ] **Interrupt Classifier**
+  - Timing algorithms
+  - Confidence thresholds
+  - User preference learning
+- [ ] **Persistent AI memory**
+  - Cross-session thought storage
+  - AI opinion formation
+  - Metacognitive loops
+- [ ] **Command marketplace**
+  - Plugin architecture
+  - Permission system
+  - User verification flow
+- [ ] **Training interfaces**
+  - Perception correction UI
+  - Module-specific training
+  - Personalization dashboard
+
+**Milestone**: AI that knows you, thinks with you, and helps proactively
+
+## 📁 Repository Structure
+```
+extended-cognition/
+├── CORE.md                    # THIS DOCUMENT - Single source of truth
+├── README.md                  # Public-facing documentation
+├── docs/
+│   ├── architecture/         # Detailed architecture docs
+│   ├── api/                  # API documentation
+│   └── development/          # Developer guides
+├── packages/
+│   ├── client-pwa/          # React PWA
+│   ├── api-gateway/         # Node.js gateway
+│   ├── stt-service/         # Python STT
+│   ├── command-parser/      # Go parser
+│   ├── llm-service/         # Python LLM
+│   ├── tts-service/         # Python TTS
+│   ├── rag-engine/          # Rust RAG
+│   └── action-executor/     # Go executor
+├── shared/
+│   ├── contracts/           # Stream contract definitions
+│   └── types/               # Shared TypeScript types
+├── infrastructure/
+│   ├── docker/              # Docker configurations
+│   └── k8s/                 # Kubernetes manifests
+└── scripts/                 # Build and deployment scripts
+```
+
+## 🎭 Core Innovation: Making AI Cognition Transparent
+
+**Traditional AI**: Black box that produces responses
+**Extended Cognition**: Glass box where you see every step of AI thought
+
+The architecture separates **reactive commands** (fast path) from **cognitive thoughts** (understanding path):
+- Commands execute in ~110ms without waiting for understanding
+- Thoughts get full context before AI responds (~650ms)
+- Both paths merge in the conversation_stream back to device
+
+The conversation_stream makes AI cognition transparent by recording:
+- What the AI understood from your words
+- What context it retrieved and why
+- What it thought about what you said
+- Why it decided to speak or stay silent
+- What commands it detected and confidence levels
+
+This transparency enables true partnership - you can correct the AI's understanding at any layer, making it learn your patterns over time. It's not logging YOUR cognition, but making the AI's cognition visible and trainable.
+
+## 🔒 Constraints & Requirements
+- Budget: <$10K hardware
+- Privacy: All processing local
+- Latency: Real-time conversation
+- Scale: 20+ concurrent users
+- Open source: Community-driven
+
+## 🤝 Contributing
+- Each microservice can be developed independently
+- Follow stream contracts exactly
+- Write tests for stream producers/consumers
+- Document API changes in CORE.md first
+
+### First Command: Perception Correction
+The most important initial command allows users to correct AI perception in real-time:
+
+```json
+{
+  "command": "correct_perception",
+  "params": {
+    "thought_id": "uuid",
+    "correction_type": "user_intent|emotion|command|context",
+    "correct_value": "I was being sarcastic, not serious",
+    "train_module": true
+  }
+}
+```
+
+This creates a feedback loop where users see AI perception and correct it, making the system learn their patterns.
+
+## ❓ Open Questions
+1. Semantic chunking algorithm for identifying thought boundaries?
+2. Best approach for persistent AI memory across sessions?
+3. Interrupt confidence threshold tuning?
+4. Training data format for personalization?
+5. Should conversation_stream be buffered or immediate streaming to device?
+
+---
+
+**Remember**: This document is the single source of truth. All other documentation should reference this. When in doubt, check CORE.md first.
