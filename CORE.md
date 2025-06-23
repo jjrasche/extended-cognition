@@ -4,15 +4,15 @@
 
 ## 🎯 Project North Star
 
-**What**: A persistent and available voice-first AI companion that knows you deeply - remembering your conversations, understanding your intent, and acting on your behalf in the digital world.
+**What**: A persistent voice-first AI companion that knows you deeply - remembering your cognitions, understanding your intent, and acting on your behalf in the digital world.
 
 **Why**: 
-- **Audio first** - Speaking is thinking. Current AI interfaces break your flow with typing, clicking, waiting. Voice preserves the natural stream of consciousness.
-- **Data sovereignty** - You can't share your deepest thoughts with a system someone else controls. Full ownership means full trust.
-- **Understands you** - Unlike session-based chatbots, every conversation builds on the last. Your companion accumulates years of context, learning not just your preferences but who you are and how to best fit into your life.
-- **Completely trainable** - seamless feedback to correct misunderstandings, reinforce behaviors you like, teach it your communication style. You're not just using a tool - you're training a companion.
-- **Complete transparency** - You see what it understood, what information it gathered, every step in its thought process visible and correctable. No mysteries, just clear traceable reasoning.
-- **Digital proxy** - The internet is full of forms, emails, bookings, and busy work. Your companion handles it all at machine speed while you stay in your flow. It's not just thinking with you - it's doing the digital chores so you don't have to.
+- **cognitional** - Current AI gets in the way of thinking. No clicking, tapping, scrolling, reading, or navigating to break your train of thought. Just natural stream of consciousness with no barriers between you and your companion.
+- **Data sovereignty** - Getting the most out of this requires complete trust. You can only trust fully when you control the system. Full ownership enables full partnership.
+- **Knowledge that compounds** - Unlike session-based chatbots, every cognition builds on the last. Your companion accumulates years of context, learning who you are while building a searchable knowledge base. It retrieves, connects, and helps you build on everything you've ever discussed.
+- **Fully trainable** - Give feedback seamlessly to correct misunderstandings, reinforce behaviors you like, or teach your communication style. You're not just using a tool - you're training a companion.
+- **Complete transparency** - See inside the black box. Know what facts it gathered, what connections it made, how it reached its conclusions. Every step traceable and correctable.
+- **Digital proxy** - Forms, emails, bookings - your companion handles the digital busywork at machine speed. Think and create while it manages the online tedium.
 
 **Demo Target**: September 2025 - Grand Rapids Tech Week - Showcase Extended Cognition as a useful thinking companion in meeting people and furthering my intent to advocate for and connect with contributors to this project.
 
@@ -25,18 +25,18 @@
 └─────▲───────┘               └────┬────┘
       │                            │   ┌───────────┐
       │                            ├───┤    STT    │
-      │                          audio └─────┬─────┘ ┌──────────────┐
-      │                            │         ├───────│Command Parser│
-      │                            │        text     └──────┬───────┘ ┌──────────────┐
-     web                           │         │           command      │   Command    │
-     RTC                           │         │              └─────────┤   Executor   │
-      │                            │         │                        └───────┬──────┘
-      │                          ┌─┴─────────┴┐                               │
-      │                          │  Semantic  │                          command verify
-      │                          │  Chunker   │                          or execution
+      │                          audio └─────┬─────┘                  ┌──────────────┐
+      │                            │         ├────────────────────────┤Command Parser│
+      │                            │        text                      └──────┬───────┘ 
+     web                           │         │                            command      
+     RTC                           │         │                               │
+      │                            │         │                        ┌──────┴───────┐
+      │                          ┌─┴─────────┴┐                       │   Command    │
+      │                          │  Thought   │                       │   Executor   │
+      │                          │  Parser    │                       └───────┬──────┘
       │                          └─────┬──────┘                               │
-┌─────┴──────┐                         │                                      │
-│ Device PWA │                      thought                                   │
+┌─────┴──────┐                         │                                 command verify
+│ Device PWA │                      thought                              or execution
 └─────┬──────┘                         │                                      │
       │                    ┌───────────┼──────────┬─────────────┐             │
       │              ┌─────┴─────┐     │    ┌─────┴─────┐  ┌────┴─────┐       │
@@ -56,38 +56,35 @@
       │                               AI                                      │
       │                             thought                                   │
       │                                │                                      │
-      │                          ┌─────┴──────┐                        ┌──────┴──────┐
-      │                          │ Interrupt  │                        │ TTS Service │
-      │                          │ Classifier ├───────yes──────────────┤             │
+      │                          ┌─────┴──────┐                               │
+      │                          │ Interrupt  │                        ┌──────┴──────┐
+      │                          │ Classifier ├───────yes──────────────┤ TTS Service │
       │                          └─────┬──────┘                        └──────┬──────┘
       │                                │                                     audio
       │                                no                                     │
       │                                │                                      │
-      └──────────conversation──────────┴──────────────────────────────────────┘
-                     stream
+      └─────────────cognition──────────┴──────────────────────────────────────┘
 ```
 ### Architectural Layers
-
-| Layer | Purpose | Modules |
-|-------|---------|---------|
-| **Input Processing** | Capture and structure speech | Audio Capture, STT, Semantic Chunker |
-| **Understanding** | Extract meaning and context (thoughts only) | User Intent, Context Assembler, Emotional Analyzer |
-| **Command Processing** | Fast path for actions (bypasses understanding) | Command Parser |
-| **Cognition** | Form intelligent responses | LLM Service |
-| **Decision** | Determine appropriate actions | Interrupt Classifier, Command Verifier |
-| **Output** | Take action and respond | TTS Service, Command Executor |
+| Layer                | Purpose                                        | Modules                                            |
+| -------------------- | ---------------------------------------------- | -------------------------------------------------- |
+| **Input Processing** | Capture and structure speech                   | Audio Capture, STT, Thought Parser                 |
+| **Understanding**    | Extract meaning and context (thoughts only)    | User Intent, Context Assembler, Emotional Analyzer |
+| **Agentic**          | Fast path for actions (bypasses understanding) | Command Parser, Command Executor                   |
+| **Cognition**        | Form intelligent responses                     | LLM Service                                        |
+| **Output**           | Determine response and deliver                 | Interrupt Classifier, TTS Service                  |
 
 ### Key Design Decisions
 1. **Server-side everything** - Processing power, speed, battery life constraints of mobile
 2. **Thought as atomic unit** - Each thought gets one complete AI understanding + response
 3. **Two optimized paths** - Commands (~110ms) bypass thought processing, thoughts (~650ms) get full understanding
-4. **Conversation stream as return flow** - Not a bus, but the actual flow back to device
+4. **cognition stream as return flow** - Not a bus, but the actual flow back to device
 5. **Every module is trainable** - Personalization at every layer
 
 ## 📊 Stream Contracts
 
-### conversation_stream (Return Flow)
-The conversation stream is the unified flow back to the device, containing the complete cognitive cycle for each thought:
+### cognition_stream (Return Flow)
+The cognition stream is the unified flow back to the device, containing the complete cognitive cycle for each thought:
 ```json
 {
   "thought_id": "uuid",
@@ -109,7 +106,7 @@ The conversation stream is the unified flow back to the device, containing the c
   "rag_context": [{
     "doc_id": "interruption_patterns",
     "relevance": 0.92,
-    "excerpt": "Natural conversation requires..."
+    "excerpt": "Natural cognition requires..."
   }],
   
   "user_emotion": {
@@ -129,7 +126,7 @@ The conversation stream is the unified flow back to the device, containing the c
   
   // Cognition layer (LLM response with full context)
   "ai_thought": {
-    "content": "This connects to their earlier idea about conversation flow",
+    "content": "This connects to their earlier idea about cognition flow",
     "confidence": 0.87,
     "type": "connection|question|insight|agreement|clarification|counterpoint"
   },
@@ -166,20 +163,20 @@ The conversation stream is the unified flow back to the device, containing the c
 
 ### Module Details
 
-| Module | Purpose | Output | Latency | Trainability |
-|--------|---------|--------|---------|--------------|
-| Audio Capture | Continuous mic recording | Audio stream | ~10ms | Low (hardware) |
-| STT | Convert speech to text | Transcript + confidence | ~80ms | High (vocabulary, accent) |
-| Semantic Chunker | Identify thought boundaries | Thoughts | ~20ms | High (pause patterns) |
-| User Intent | Interpret what user wants | Goal + topic analysis | ~50ms | Very High (context patterns) |
-| Context Assembler | Find relevant knowledge | RAG documents | ~100ms | High (relevance scoring) |
-| Emotional Analyzer | Detect user state | Emotion + energy | ~50ms | High (baseline calibration) |
-| Command Parser | Identify action requests | Command list | ~30ms | Very High (custom commands) |
-| LLM Service | Generate AI thoughts | AI thought + type | ~400ms | Medium (model selection) |
-| Interrupt Classifier | Decide whether to speak | yes/no decision | ~20ms | Very High (thresholds) |
-| Command Verifier | Check permissions | Verification need | ~10ms | High (trust rules) |
-| TTS Service | Generate speech (only on interrupt=yes) | Audio response | ~200ms | Medium (voice, emotion) |
-| Command Executor | Run approved commands | Action results | Varies | Low (plugin-based) |
+| Module               | Purpose                                 | Output                  | Latency | Trainability                 |
+| -------------------- | --------------------------------------- | ----------------------- | ------- | ---------------------------- |
+| Audio Capture        | Continuous mic recording                | Audio stream            | ~10ms   | Low (hardware)               |
+| STT                  | Convert speech to text                  | Transcript + confidence | ~80ms   | High (vocabulary, accent)    |
+| Thought Parser       | Identify thought boundaries             | Thoughts                | ~20ms   | High (pause patterns)        |
+| User Intent          | Interpret what user wants               | Goal + topic analysis   | ~50ms   | Very High (context patterns) |
+| Context Assembler    | Find relevant knowledge                 | RAG documents           | ~100ms  | High (relevance scoring)     |
+| Emotional Analyzer   | Detect user state                       | Emotion + energy        | ~50ms   | High (baseline calibration)  |
+| Command Parser       | Identify action requests                | Command list            | ~30ms   | Very High (custom commands)  |
+| LLM Service          | Generate AI thoughts                    | AI thought + type       | ~400ms  | Medium (model selection)     |
+| Interrupt Classifier | Decide whether to speak                 | yes/no decision         | ~20ms   | Very High (thresholds)       |
+| Command Verifier     | Check permissions                       | Verification need       | ~10ms   | High (trust rules)           |
+| TTS Service          | Generate speech (only on interrupt=yes) | Audio response          | ~200ms  | Medium (voice, emotion)      |
+| Command Executor     | Run approved commands                   | Action results          | Varies  | Low (plugin-based)           |
 
 **Command Path**: ~110ms to start execution (Audio → STT → Parser)  
 **Thought Path**: ~650ms to interrupt decision (Audio → STT → Chunker → Understanding → LLM → Classifier)  
@@ -189,7 +186,7 @@ The conversation stream is the unified flow back to the device, containing the c
 - PostgreSQL for persistent storage (maybe)
 - S3-compatible storage for audio archive
 - Docker + Docker Compose for development
-- In-memory conversation_stream (Redis Streams optional for scaling)
+- In-memory cognition_stream (Redis Streams optional for scaling)
 
 ## 📈 Success Metrics
 
@@ -200,7 +197,7 @@ The conversation stream is the unified flow back to the device, containing the c
 - Concurrent users: 20+ on Mac Mini M4 Pro
 
 ### Demo Capabilities (September 2025)
-- **Seamless voice interaction** - Natural conversation flow
+- **Seamless voice interaction** - Natural cognition flow
 - **Automatic knowledge capture** - Real-time updates as you mention people/topics
 - **Proactive interruptions** - AI jumps in when it has relevant insights
 - **AI develops opinions** - Not just answering, but thinking alongside you
@@ -222,14 +219,14 @@ The conversation stream is the unified flow back to the device, containing the c
   - Whisper model setup
   - Stream processing of audio chunks
   - Return transcripts with confidence
-- [ ] **Basic semantic chunking**
+- [ ] **Basic Thought Parser**
   - Pause detection algorithm
   - Thought boundary identification
   - Create thought objects
 - [ ] **Text echo response**
   - Return transcript to device
   - Display in UI for verification
-  - Log conversation_stream
+  - Log cognition_stream
 
 **Milestone**: Speak → See transcript appear in <1 second
 
@@ -257,7 +254,7 @@ The conversation stream is the unified flow back to the device, containing the c
   - Fuzzy matching for variations
   - Command execution framework
 
-**Milestone**: Have a real conversation with context from your notes
+**Milestone**: Have a real cognition with context from your notes
 
 ### Phase 3: Cognitive Enhancement (October - November 2025)
 **Goal**: Make the AI feel like a true thought partner
@@ -320,9 +317,9 @@ extended-cognition/
 The architecture separates **reactive commands** (fast path) from **cognitive thoughts** (understanding path):
 - Commands execute in ~110ms without waiting for understanding
 - Thoughts get full context before AI responds (~650ms)
-- Both paths merge in the conversation_stream back to device
+- Both paths merge in the cognition_stream back to device
 
-The conversation_stream makes AI cognition transparent by recording:
+The cognition_stream makes AI cognition transparent by recording:
 - What the AI understood from your words
 - What context it retrieved and why
 - What it thought about what you said
@@ -334,7 +331,7 @@ This transparency enables true partnership - you can correct the AI's understand
 ## 🔒 Constraints & Requirements
 - Budget: <$10K hardware
 - Privacy: All processing local
-- Latency: Real-time conversation
+- Latency: Real-time cognition
 - Scale: 20+ concurrent users
 - Open source: Community-driven
 
@@ -362,11 +359,11 @@ The most important initial command allows users to correct AI perception in real
 This creates a feedback loop where users see AI perception and correct it, making the system learn their patterns.
 
 ## ❓ Open Questions
-1. Semantic chunking algorithm for identifying thought boundaries?
+1. Thought Parser algorithm for identifying thought boundaries?
 2. Best approach for persistent AI memory across sessions?
 3. Interrupt confidence threshold tuning?
 4. Training data format for personalization?
-5. Should conversation_stream be buffered or immediate streaming to device?
+5. Should cognition_stream be buffered or immediate streaming to device?
 
 ---
 
