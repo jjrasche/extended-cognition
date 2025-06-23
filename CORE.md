@@ -1,15 +1,15 @@
 # Extended Cognition Core Project Document
 
-> **Single Source of Truth** - Last Updated: June 21, 2025
+> **Single Source of Truth** - Last Updated: June 22, 2025
 
 ## 🎯 Project North Star
 
-**What**: A persistent voice-first AI companion that knows you deeply - remembering your cognitions, understanding your intent, and acting on your behalf in the digital world.
+**What**: A persistent voice-first AI companion that knows you deeply - remembering your thoughts, understanding your intent, and acting on your behalf in the digital world.
 
 **Why**: 
-- **cognitional** - Current AI gets in the way of thinking. No clicking, tapping, scrolling, reading, or navigating to break your train of thought. Just natural stream of consciousness with no barriers between you and your companion.
+- **Conversational** - Current AI gets in the way of thinking. No clicking, tapping, scrolling, reading, or navigating to break your train of thought. Just natural stream of consciousness with no barriers between you and your companion.
 - **Data sovereignty** - Getting the most out of this requires complete trust. You can only trust fully when you control the system. Full ownership enables full partnership.
-- **Knowledge that compounds** - Unlike session-based chatbots, every cognition builds on the last. Your companion accumulates years of context, learning who you are while building a searchable knowledge base. It retrieves, connects, and helps you build on everything you've ever discussed.
+- **Knowledge that compounds** - Unlike session-based chatbots, every thought builds on the last. Your companion accumulates years of context, learning who you are while building a searchable knowledge base. It retrieves, connects, and helps you build on everything you've ever discussed.
 - **Fully trainable** - Give feedback seamlessly to correct misunderstandings, reinforce behaviors you like, or teach your communication style. You're not just using a tool - you're training a companion.
 - **Complete transparency** - See inside the black box. Know what facts it gathered, what connections it made, how it reached its conclusions. Every step traceable and correctable.
 - **Digital proxy** - Forms, emails, bookings - your companion handles the digital busywork at machine speed. Think and create while it manages the online tedium.
@@ -76,15 +76,12 @@
 
 ### Key Design Decisions
 1. **Server-side everything** - Processing power, speed, battery life constraints of mobile
-2. **Thought as atomic unit** - Each thought gets one complete AI understanding + response
+2. **Thought as atomic unit** - Each user thought gets one complete AI cognition
 3. **Two optimized paths** - Commands (~110ms) bypass thought processing, thoughts (~650ms) get full understanding
-4. **cognition stream as return flow** - Not a bus, but the actual flow back to device
-5. **Every module is trainable** - Personalization at every layer
 
-## 📊 Stream Contracts
+## 📊 Cognition Contract
 
-### cognition_stream (Return Flow)
-The cognition stream is the unified flow back to the device, containing the complete cognitive cycle for each thought:
+Data structure representing a complete AI cognition in response to a user thought:
 ```json
 {
   "thought_id": "uuid",
@@ -106,7 +103,7 @@ The cognition stream is the unified flow back to the device, containing the comp
   "rag_context": [{
     "doc_id": "interruption_patterns",
     "relevance": 0.92,
-    "excerpt": "Natural cognition requires..."
+    "excerpt": "Natural conversation requires..."
   }],
   
   "user_emotion": {
@@ -126,7 +123,7 @@ The cognition stream is the unified flow back to the device, containing the comp
   
   // Cognition layer (LLM response with full context)
   "ai_thought": {
-    "content": "This connects to their earlier idea about cognition flow",
+    "content": "This connects to their earlier idea about flow",
     "confidence": 0.87,
     "type": "connection|question|insight|agreement|clarification|counterpoint"
   },
@@ -179,7 +176,7 @@ The cognition stream is the unified flow back to the device, containing the comp
 | Command Executor     | Run approved commands                   | Action results          | Varies  | Low (plugin-based)           |
 
 **Command Path**: ~110ms to start execution (Audio → STT → Parser)  
-**Thought Path**: ~650ms to interrupt decision (Audio → STT → Chunker → Understanding → LLM → Classifier)  
+**Thought Path**: ~650ms to interrupt decision (Audio → STT → Parser → Understanding → LLM → Classifier)  
 **With TTS**: +200ms for audio response
 
 ### Infrastructure
@@ -188,19 +185,12 @@ The cognition stream is the unified flow back to the device, containing the comp
 - Docker + Docker Compose for development
 - In-memory cognition_stream (Redis Streams optional for scaling)
 
-## 📈 Success Metrics
-
-### Technical Metrics
+## Technical Metrics
 - Command response: ~110ms to execution
 - Thought response: ~650ms to decision, ~850ms with TTS
 - Audio transcription accuracy: >90% (initial) → >98% (trained)
 - Concurrent users: 20+ on Mac Mini M4 Pro
 
-### Demo Capabilities (September 2025)
-- **Seamless voice interaction** - Natural cognition flow
-- **Automatic knowledge capture** - Real-time updates as you mention people/topics
-- **Proactive interruptions** - AI jumps in when it has relevant insights
-- **AI develops opinions** - Not just answering, but thinking alongside you
 
 ## 🚀 Development Phases
 
@@ -254,7 +244,7 @@ The cognition stream is the unified flow back to the device, containing the comp
   - Fuzzy matching for variations
   - Command execution framework
 
-**Milestone**: Have a real cognition with context from your notes
+**Milestone**: Have a real conversation with context from your notes
 
 ### Phase 3: Cognitive Enhancement (October - November 2025)
 **Goal**: Make the AI feel like a true thought partner
@@ -312,7 +302,7 @@ extended-cognition/
 ## 🎭 Core Innovation: Making AI Cognition Transparent
 
 **Traditional AI**: Black box that produces responses
-**Extended Cognition**: Glass box where you see every step of AI thought
+**Extended Cognition**: Glass box where you see every step of AI cognition
 
 The architecture separates **reactive commands** (fast path) from **cognitive thoughts** (understanding path):
 - Commands execute in ~110ms without waiting for understanding
@@ -326,12 +316,12 @@ The cognition_stream makes AI cognition transparent by recording:
 - Why it decided to speak or stay silent
 - What commands it detected and confidence levels
 
-This transparency enables true partnership - you can correct the AI's understanding at any layer, making it learn your patterns over time. It's not logging YOUR cognition, but making the AI's cognition visible and trainable.
+This transparency enables true partnership - you can correct the AI's understanding at any layer, making it learn your patterns over time. The system records the AI's cognition of YOUR thoughts, making the AI's cognitive process visible and trainable.
 
 ## 🔒 Constraints & Requirements
 - Budget: <$10K hardware
 - Privacy: All processing local
-- Latency: Real-time cognition
+- Latency: Real-time conversation
 - Scale: 20+ concurrent users
 - Open source: Community-driven
 
