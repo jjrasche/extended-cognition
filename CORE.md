@@ -9,7 +9,8 @@
 **Why**: 
 - **Conversational** - Current AI gets in the way of thinking. No clicking, tapping, scrolling, reading, or navigating to break your train of thought. Just natural stream of consciousness with no barriers between you and your companion.
 - **Data sovereignty** - Getting the most out of this requires complete trust. You can only trust fully when you control the system. Full ownership enables full partnership.
-- **Knowledge that compounds** - Unlike session-based chatbots, every thought builds on the last. Your companion accumulates years of context, learning who you are while building a searchable knowledge base. It retrieves, connects, and helps you build on everything you've ever discussed.
+- **Turn ideas into assets** - Every conversation becomes part of your growing knowledge base - intellectual property that you own completely. In a future where your unique perspectives and connections are your primary economic asset, your companion helps you capture and leverage this value.
+- **Perfect recall** -  Your companion has access to your full knowledge base, connecting today's thoughts to conversations from years ago, surfacing patterns in your relationships and thinking, and helping you build on foundations you've already laid.
 - **Fully trainable** - Give feedback seamlessly to correct misunderstandings, reinforce behaviors you like, or teach your communication style. You're not just using a tool - you're training a companion.
 - **Complete transparency** - See inside the black box. Know what facts it gathered, what connections it made, how it reached its conclusions. Every step traceable and correctable.
 - **Digital proxy** - Forms, emails, bookings - your companion handles the digital busywork at machine speed. Think and create while it manages the online tedium.
