@@ -11,10 +11,11 @@
 pattern: <the problem>. <how extended cognition solves it>. <what it means for you (maybe ... call to action .. inspire)>.
 
 
-- **Conversational** - how we currently interface with technology slows our thinking (clicking, tapping, scrolling, reading, navigating). Extended Cognition voice first approach  removes all UI friction - just speak naturally while walking, driving, or with eyes closed. Enable stream of consciousness productivity with no input/output between you and your companion.
+- **Conversational** - How we currently interface with technology slows our thinking - clicking, tapping, scrolling, reading, navigating. Extended Cognition's voice-first approach removes that friction - just speak naturally while walking, driving, or with eyes closed. Enable stream-of-consciousness productivity with no barriers between your thoughts and your companion.
 
 
-- **Digital proxy** - Humans aren't built for digital spaces, everything we've designed to do so from keyboards to AR is a compromise, not acknowledging that it's not how our brains are designed. agentic behavior allows your companion to handle the digital details at machine speed. Allowing you to think and create at a faster pace.
+
+- **Act at Machine Speed** - We are not built to affect digital change. All our tools, from keyboards to screens, are a compromise forcing the fastest users to read, type, click, navigate, and most of all wait. Extended Cognition allows you to build trust in your companion to take action in the digital world on your behalf. Whether, moving funds, sending messages, ordering online, scheduling deliveries - your companion executes your intent at machine speed. Build trust in your companion's ability to handle the digital world so you can focus on the real world.
 
 - **Data sovereignty** - You can't trust a partner controlled by a company True partnership requires complete trust. You can only trust fully when you own the system. Self-hosted processing, local models, your data - enabling the deep personal sharing that makes AI actually useful.
 
