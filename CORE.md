@@ -74,6 +74,28 @@
 | **Cognition**        | Form intelligent responses                     | LLM Service                                        |
 | **Output**           | Determine response and deliver                 | Interrupt Classifier, TTS Service                  |
 
+
+### Module Details
+| Module               | Purpose                                 | Output                  | Latency | Trainability                 |
+| -------------------- | --------------------------------------- | ----------------------- | ------- | ---------------------------- |
+| Audio Capture        | Continuous mic recording                | Audio stream            | ~10ms   | Low (hardware)               |
+| STT                  | Convert speech to text                  | Transcript + confidence | ~80ms   | High (vocabulary, accent)    |
+| Thought Parser       | Identify thought boundaries             | Thoughts                | ~20ms   | High (pause patterns)        |
+| User Intent          | Interpret what user wants               | Goal + topic analysis   | ~50ms   | Very High (context patterns) |
+| Context Assembler    | Find relevant knowledge                 | RAG documents           | ~100ms  | High (relevance scoring)     |
+| Emotional Analyzer   | Detect user state                       | Emotion + energy        | ~50ms   | High (baseline calibration)  |
+| Command Parser       | Identify action requests                | Command list            | ~30ms   | Very High (custom commands)  |
+| LLM Service          | Generate AI thoughts                    | AI thought + type       | ~400ms  | Medium (model selection)     |
+| Interrupt Classifier | Decide whether to speak                 | yes/no decision         | ~20ms   | Very High (thresholds)       |
+| Command Verifier     | Check permissions                       | Verification need       | ~10ms   | High (trust rules)           |
+| TTS Service          | Generate speech (only on interrupt=yes) | Audio response          | ~200ms  | Medium (voice, emotion)      |
+| Command Executor     | Run approved commands                   | Action results          | Varies  | Low (plugin-based)           |
+
+**Command Path**: ~110ms to start execution (Audio → STT → Parser)  
+**Thought Path**: ~650ms to interrupt decision (Audio → STT → Parser → Understanding → LLM → Classifier)  
+**With TTS**: +200ms for audio response
+
+
 ### Key Design Decisions
 1. **Server-side everything** - Processing power, speed, battery life constraints of mobile
 2. **Thought as atomic unit** - Each user thought gets one complete AI cognition
@@ -141,7 +163,7 @@ Data structure representing a complete AI cognition in response to a user though
 ### Working
 - ✅ Repository structure established
 - ✅ React PWA shell with package.json
-- ✅ Stream contracts defined
+- ✅ Cognition contracts defined
 - ✅ Architecture documented
 
 ### Immediate Blocker (FOCUS HERE)
@@ -157,27 +179,6 @@ Data structure representing a complete AI cognition in response to a user though
 4. Basic round-trip: speak → transcribe → echo back text
 
 ## 🛠️ Technology Stack
-
-### Module Details
-
-| Module               | Purpose                                 | Output                  | Latency | Trainability                 |
-| -------------------- | --------------------------------------- | ----------------------- | ------- | ---------------------------- |
-| Audio Capture        | Continuous mic recording                | Audio stream            | ~10ms   | Low (hardware)               |
-| STT                  | Convert speech to text                  | Transcript + confidence | ~80ms   | High (vocabulary, accent)    |
-| Thought Parser       | Identify thought boundaries             | Thoughts                | ~20ms   | High (pause patterns)        |
-| User Intent          | Interpret what user wants               | Goal + topic analysis   | ~50ms   | Very High (context patterns) |
-| Context Assembler    | Find relevant knowledge                 | RAG documents           | ~100ms  | High (relevance scoring)     |
-| Emotional Analyzer   | Detect user state                       | Emotion + energy        | ~50ms   | High (baseline calibration)  |
-| Command Parser       | Identify action requests                | Command list            | ~30ms   | Very High (custom commands)  |
-| LLM Service          | Generate AI thoughts                    | AI thought + type       | ~400ms  | Medium (model selection)     |
-| Interrupt Classifier | Decide whether to speak                 | yes/no decision         | ~20ms   | Very High (thresholds)       |
-| Command Verifier     | Check permissions                       | Verification need       | ~10ms   | High (trust rules)           |
-| TTS Service          | Generate speech (only on interrupt=yes) | Audio response          | ~200ms  | Medium (voice, emotion)      |
-| Command Executor     | Run approved commands                   | Action results          | Varies  | Low (plugin-based)           |
-
-**Command Path**: ~110ms to start execution (Audio → STT → Parser)  
-**Thought Path**: ~650ms to interrupt decision (Audio → STT → Parser → Understanding → LLM → Classifier)  
-**With TTS**: +200ms for audio response
 
 ### Infrastructure
 - PostgreSQL for persistent storage (maybe)
