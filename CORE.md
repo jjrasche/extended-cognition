@@ -7,13 +7,36 @@
 **What**: A persistent voice-first AI companion that knows you deeply - remembering your thoughts, understanding your intent, and acting on your behalf in the digital world.
 
 **Why**: 
-- **Conversational** - Current AI gets in the way of thinking. No clicking, tapping, scrolling, reading, or navigating to break your train of thought. Just natural stream of consciousness with no barriers between you and your companion.
-- **Data sovereignty** - Getting the most out of this requires complete trust. You can only trust fully when you control the system. Full ownership enables full partnership.
-- **Turn ideas into assets** - Every conversation becomes part of your growing knowledge base - intellectual property that you own completely. In a future where your unique perspectives and connections are your primary economic asset, your companion helps you capture and leverage this value.
-- **Perfect recall** -  Your companion has access to your full knowledge base, connecting today's thoughts to conversations from years ago, surfacing patterns in your relationships and thinking, and helping you build on foundations you've already laid.
-- **Fully trainable** - Give feedback seamlessly to correct misunderstandings, reinforce behaviors you like, or teach your communication style. You're not just using a tool - you're training a companion.
-- **Complete transparency** - See inside the black box. Know what facts it gathered, what connections it made, how it reached its conclusions. Every step traceable and correctable.
-- **Digital proxy** - Forms, emails, bookings - your companion handles the digital busywork at machine speed. Think and create while it manages the online tedium.
+
+pattern: <the problem>. <how extended cognition solves it>. <what it means for you (maybe ... call to action .. inspire)>.
+
+
+- **Conversational** - how we currently interface with technology slows our thinking (clicking, tapping, scrolling, reading, navigating). Extended Cognition voice first approach  removes all UI friction - just speak naturally while walking, driving, or with eyes closed. Enable stream of consciousness productivity with no input/output between you and your companion.
+
+
+- **Digital proxy** - Humans aren't built for digital spaces, everything we've designed to do so from keyboards to AR is a compromise, not acknowledging that it's not how our brains are designed. agentic behavior allows your companion to handle the digital details at machine speed. Allowing you to think and create at a faster pace.
+
+- **Data sovereignty** - You can't trust a partner controlled by a company True partnership requires complete trust. You can only trust fully when you own the system. Self-hosted processing, local models, your data - enabling the deep personal sharing that makes AI actually useful.
+
+
+Getting the most out of this requires complete trust. You can only trust fully when you control the system. Full ownership enables full partnership.
+
+I think this is more about alignment like what is alignment other than like the the intentions of the intelligence like you can't if you're a consumer of this product it can never truly align with you
+
+
+- **Turn ideas into assets** - our economic value is being erroded by automation and AI. Your companion extracts ... from every conversation with, adding it to your `knowledge base`. The collection of your unique perspectives and connections that become your primary economic asset. your companion helps you capture and leverage this value. Start building personal intellectual property and secure your ability to contribute to the future.
+
+
+- **Perfect recall** - we lose so much potential. Extended Cognition has access to your full `knowledge base`, connecting today's thoughts to conversations from years ago, surfacing patterns in your relationships and thinking, and helping you build on foundations you've already laid.
+
+
+- **Adapts to you** - consumer products generalize and are difficult to make your own. Give feedback seamlessly to correct misunderstandings, reinforce behaviors you like, or teach your communication style. You're not just using a tool - you're training a companion.
+
+
+
+- **Understand how it thinks...** - You don't know what the AI is thinking or what facts it is working with. Know what facts it gathered, what connections it made, how it reached its conclusions. Every step traceable and correctable.
+
+
 
 **Demo Target**: September 2025 - Grand Rapids Tech Week - Showcase Extended Cognition as a useful thinking companion in meeting people and furthering my intent to advocate for and connect with contributors to this project.
 
