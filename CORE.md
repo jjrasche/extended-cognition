@@ -4,40 +4,23 @@
 
 ## 🎯 Project North Star
 
-**What**: A persistent voice-first AI companion that knows you deeply - remembering your thoughts, understanding your intent, and acting on your behalf in the digital world.
+**What**: A persistent deeply contextual voice-first AI companion that knows you deeply - remembering your thoughts, understanding your intent, and acting on your behalf in the digital world.
 
 **Why**: 
 
-pattern: <the problem>. <how extended cognition solves it>. <what it means for you (maybe ... call to action .. inspire)>.
-
-
 - **Conversational** - How we currently interface with technology slows our thinking - clicking, tapping, scrolling, reading, navigating. Extended Cognition's voice-first approach removes that friction - just speak naturally while walking, driving, or with eyes closed. Enable stream-of-consciousness productivity with no barriers between your thoughts and your companion.
 
+- **Act at Machine Speed** - We are not built to operate in the digital world. All our tools, from keyboards to screens, are a compromise forcing even the fastest users to read, type, click, navigate, and most of all wait. Extended Cognition allows you to build the trust necessary for your your companion to take action in the digital world on your behalf. Whether, moving funds, sending messages, ordering online, scheduling deliveries - your companion executes your intent at machine speed. Build trust in your companion's ability to handle the digital world so you can focus on the real world.
 
+- **Data sovereignty** - We can't build deep trust with systems controlled by others. Extended Cognition is fully self-hosted - your data, your models, your control. Only when you own the system can you share freely enough for AI to truly help YOU.
 
-- **Act at Machine Speed** - We are not built to affect digital change. All our tools, from keyboards to screens, are a compromise forcing the fastest users to read, type, click, navigate, and most of all wait. Extended Cognition allows you to build trust in your companion to take action in the digital world on your behalf. Whether, moving funds, sending messages, ordering online, scheduling deliveries - your companion executes your intent at machine speed. Build trust in your companion's ability to handle the digital world so you can focus on the real world.
+- **Turn ideas into assets** - Automation and AI is erroding our economic potential. With every discussion, your companion extracts the insights, patterns, and wisdom that make you irreplaceable and adds it to your `knowledge base`. This collection of unique perspectives and connections become your primary economic asset. Your companion helps you capture and leverage this value. Build personal intellectual property and secure your ability to contribute to the future.
 
-- **Data sovereignty** - You can't trust a partner controlled by a company True partnership requires complete trust. You can only trust fully when you own the system. Self-hosted processing, local models, your data - enabling the deep personal sharing that makes AI actually useful.
+- **Perfect recall** - We've forgoten more than we can imagine. Extended Cognition has access to your full `knowledge base`, connecting today's thoughts to conversations from years ago, surfacing patterns in your relationships and thinking, and helping you build higher on foundations you've already laid.
 
+- **Adapts to you** - Consumer products generalize to large markets and are difficult to make your own. Extended Cognition connects seamless feedback to update models and parameters, reducing misunderstandings, reinforcing desired behaviors, and adapting to your communication style. You're not just using a tool - you're training a companion.
 
-Getting the most out of this requires complete trust. You can only trust fully when you control the system. Full ownership enables full partnership.
-
-I think this is more about alignment like what is alignment other than like the the intentions of the intelligence like you can't if you're a consumer of this product it can never truly align with you
-
-
-- **Turn ideas into assets** - our economic value is being erroded by automation and AI. Your companion extracts ... from every conversation with, adding it to your `knowledge base`. The collection of your unique perspectives and connections that become your primary economic asset. your companion helps you capture and leverage this value. Start building personal intellectual property and secure your ability to contribute to the future.
-
-
-- **Perfect recall** - we lose so much potential. Extended Cognition has access to your full `knowledge base`, connecting today's thoughts to conversations from years ago, surfacing patterns in your relationships and thinking, and helping you build on foundations you've already laid.
-
-
-- **Adapts to you** - consumer products generalize and are difficult to make your own. Give feedback seamlessly to correct misunderstandings, reinforce behaviors you like, or teach your communication style. You're not just using a tool - you're training a companion.
-
-
-
-- **Understand how it thinks...** - You don't know what the AI is thinking or what facts it is working with. Know what facts it gathered, what connections it made, how it reached its conclusions. Every step traceable and correctable.
-
-
+- **Understand how it thinks** - We don't know what knwoledge forms the basis of AI inference. Extended Cognition reveals what assumptions your companion holds. From which portions of your `knowledge base` it's pulling from to how it percieves your emotional state, you see it all. Every fact is traceable and correctable.
 
 **Demo Target**: September 2025 - Grand Rapids Tech Week - Showcase Extended Cognition as a useful thinking companion in meeting people and furthering my intent to advocate for and connect with contributors to this project.
 
@@ -100,10 +83,16 @@ I think this is more about alignment like what is alignment other than like the 
 | **Output**           | Determine response and deliver                 | Interrupt Classifier, TTS Service                  |
 
 
-### Module Details
+### Device-Side Modules:
+| Module                     | Purpose                  | Output                      | Latency |
+| -------------------------- | ------------------------ | --------------------------- | ------- |
+| Audio Capture              | Continuous mic recording | Audio stream                | ~10ms   |
+| Physical Context Collector | Sensor aggregation       | Activity + environment data | ~30ms   |
+| Stream Manager             | WebSocket handling       | Bidirectional streams       | ~5ms    |
+
+### Server-Side Module Details
 | Module               | Purpose                                 | Output                  | Latency | Trainability                 |
 | -------------------- | --------------------------------------- | ----------------------- | ------- | ---------------------------- |
-| Audio Capture        | Continuous mic recording                | Audio stream            | ~10ms   | Low (hardware)               |
 | STT                  | Convert speech to text                  | Transcript + confidence | ~80ms   | High (vocabulary, accent)    |
 | Thought Parser       | Identify thought boundaries             | Thoughts                | ~20ms   | High (pause patterns)        |
 | User Intent          | Interpret what user wants               | Goal + topic analysis   | ~50ms   | Very High (context patterns) |
