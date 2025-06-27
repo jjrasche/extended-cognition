@@ -209,32 +209,7 @@ Data structure representing a complete AI cognition in response to a user though
 
 ## 🚀 Development Phases
 
-### Phase 1: Core Pipeline (Current - July 2025)
-**Goal**: Get audio flowing through the system with basic echo response
-
-- [ ] **WebRTC audio capture** in React PWA
-  - MediaStream API implementation
-  - Continuous recording with chunking
-  - Visual audio level indicator
-- [ ] **API Gateway** with WebSocket support
-  - Handle WebSocket connections
-  - Route audio chunks to services
-  - Basic JWT authentication
-- [ ] **STT integration** 
-  - Whisper model setup
-  - Stream processing of audio chunks
-  - Return transcripts with confidence
-- [ ] **Basic Thought Parser**
-  - Pause detection algorithm
-  - Thought boundary identification
-  - Create thought objects
-- [ ] **Text echo response**
-  - Return transcript to device
-  - Display in UI for verification
-  - Log cognition_stream
-
-**Milestone**: Speak → See transcript appear in <1 second
-
+### [Phase 1](./Phase1.md)
 ### Phase 2: Intelligence Layer (August - September 2025)
 **Goal**: Add understanding, thinking, and speaking capabilities
 
