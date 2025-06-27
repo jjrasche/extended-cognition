@@ -16,6 +16,7 @@ __pycache__/
 venv/
 .DS_Store
 *.log
+extended-cognition-7cc3083c5554.json
 
 # Docker
 .dockerignore
