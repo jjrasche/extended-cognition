@@ -3,7 +3,7 @@ import os
 import json
 import redis
 import asyncio
-from groq import Groq
+from groq import AsyncGroq
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -11,7 +11,7 @@ load_dotenv()
 
 class ExtendedCognitionLLM:
     def __init__(self):
-        self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        self.client = AsyncGroq(api_key=os.getenv("GROQ_API_KEY"))
         self.model = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
         self.redis_client = redis.Redis(host='localhost', port=6379, db=0)
         
@@ -125,7 +125,7 @@ RESPONSE: Your actual response to the user"""
         """Generate response using Groq API with cognitive processing"""
         try:
             # Call Groq API
-            completion = self.client.chat.completions.create(
+            completion = await self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
                 temperature=0.7,
