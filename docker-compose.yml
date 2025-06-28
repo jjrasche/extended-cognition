@@ -1,0 +1,111 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  websocket-server:
+    build:
+      context: ./services/websocket-server
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./services/websocket-server:/app
+
+  audio-processor:
+    build:
+      context: ./services/audio-processor
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./services/audio-processor:/app
+      - audio_temp:/tmp
+
+  trigger-llm:
+    build:
+      context: ./services/trigger-llm
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=llama-3.1-70b-versatile
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./services/trigger-llm:/app
+
+  tts-service:
+    build:
+      context: ./services/tts-service
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      # Add other TTS service API keys if using different provider
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./services/tts-service:/app
+
+  document-generator:
+    build:
+      context: ./services/document-generator
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - GOOGLE_DRIVE_AUDIO_FOLDER_ID=${GOOGLE_DRIVE_AUDIO_FOLDER_ID:-placeholder}
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./services/document-generator:/app
+      # Note: Copy service-account-key.json to services/document-generator/ if you have it
+
+  # Existing LLM service from your codebase (optional for Phase 1)
+  llm-inference:
+    build:
+      context: ./services/llm-inference
+      dockerfile: dockerfile
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=llama-3.1-8b-instant
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  audio_temp:
