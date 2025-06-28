@@ -1,11 +1,9 @@
-# requirements-phase1.txt
 # Core dependencies for Phase 1 services
 
 # Async and networking
 websockets==12.0
 aiohttp==3.9.1
 
-# Redis (updated for asyncio support)
 redis==5.0.1
 hiredis==2.3.2
 
@@ -27,4 +25,3 @@ python-dateutil==2.8.2
 
 # Logging and monitoring
 structlog==23.2.0
-aioredis==2.0.1

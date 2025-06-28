@@ -3,7 +3,7 @@ import asyncio
 import websockets
 import json
 import base64
-import aioredis as redis
+import redis.asyncio as redis
 from datetime import datetime
 import logging
 import os
@@ -22,8 +22,9 @@ class AudioStreamingServer:
         
     async def init_redis(self):
         """Initialize Redis connection"""
-        self.redis_client = await redis.Redis(
-            host='localhost', 
+        redis_host = os.getenv('REDIS_URL', 'redis://localhost:6379').replace('redis://', '').split(':')[0]
+        self.redis_client = redis.Redis(
+            host=redis_host, 
             port=6379, 
             db=0,
             decode_responses=False  # We'll handle encoding ourselves

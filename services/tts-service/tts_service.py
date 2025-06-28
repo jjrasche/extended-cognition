@@ -1,6 +1,6 @@
 # tts_service.py
 import asyncio
-import aioredis as redis
+import redis.asyncio as redis
 import json
 import base64
 from datetime import datetime
@@ -27,8 +27,9 @@ class TTSService:
         
     async def init_redis(self):
         """Initialize Redis connection"""
-        self.redis_client = await redis.Redis(
-            host='localhost',
+        redis_host = os.getenv('REDIS_URL', 'redis://localhost:6379').replace('redis://', '').split(':')[0]
+        self.redis_client = redis.Redis(
+        host=redis_host,
             port=6379,
             db=0,
             decode_responses=False

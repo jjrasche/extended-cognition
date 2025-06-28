@@ -1,6 +1,6 @@
 # trigger_llm_handler.py
 import asyncio
-import aioredis as redis
+import redis.asyncio as redis
 import json
 from datetime import datetime
 from groq import AsyncGroq
@@ -43,8 +43,9 @@ Make it suitable for future reference in their second brain."""
     
     async def init_redis(self):
         """Initialize Redis connection"""
-        self.redis_client = await redis.Redis(
-            host='localhost',
+        redis_host = os.getenv('REDIS_URL', 'redis://localhost:6379').replace('redis://', '').split(':')[0]
+        self.redis_client = redis.Redis(
+        host=redis_host,
             port=6379,
             db=0,
             decode_responses=False
