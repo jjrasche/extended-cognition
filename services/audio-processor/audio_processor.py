@@ -1,4 +1,3 @@
-# audio_processor.py
 import asyncio
 import redis.asyncio as redis
 import json
@@ -9,6 +8,8 @@ from groq import AsyncGroq
 from typing import Dict, List, Optional
 import logging
 from collections import defaultdict
+import io
+from pydub import AudioSegment
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -44,7 +45,7 @@ class AudioProcessor:
         """Initialize Redis connection"""
         redis_host = os.getenv('REDIS_URL', 'redis://localhost:6379').replace('redis://', '').split(':')[0]
         self.redis_client = redis.Redis(
-        host=redis_host,
+            host=redis_host,
             port=6379,
             db=0,
             decode_responses=False
@@ -88,27 +89,51 @@ class AudioProcessor:
             await self.transcribe_buffer(session_id)
     
     async def transcribe_buffer(self, session_id: str):
-        """Transcribe accumulated audio buffer using Groq"""
+        """Transcribe accumulated audio buffer using Groq - FIXED VERSION"""
         session = self.sessions[session_id]
         
         if not session["audio_buffer"]:
             return
         
         try:
-            # Combine audio chunks (in production, you'd properly concatenate audio)
-            # For now, we'll process the last chunk as a simplification
-            last_chunk = session["audio_buffer"][-1]
-            audio_data = base64.b64decode(last_chunk["audio"])
+            # Concatenate all audio chunks properly
+            combined_audio_data = bytearray()
+            
+            logger.info(f"Concatenating {len(session['audio_buffer'])} chunks for session {session_id}")
+            
+            for chunk_info in session["audio_buffer"]:
+                # Decode base64 chunk
+                chunk_bytes = base64.b64decode(chunk_info["audio"])
+                combined_audio_data.extend(chunk_bytes)
+            
+            # Convert to bytes
+            audio_data = bytes(combined_audio_data)
             
             # Create temporary file for Groq API (it requires file upload)
             temp_filename = f"/tmp/audio_{session_id}_{datetime.utcnow().timestamp()}.wav"
-            with open(temp_filename, "wb") as f:
-                f.write(audio_data)
+            
+            # If the audio data is raw PCM, we need to add WAV headers
+            # Assuming 16kHz, mono, 16-bit PCM
+            if not audio_data.startswith(b'RIFF'):
+                # Create WAV file with proper headers
+                import wave
+                with wave.open(temp_filename, 'wb') as wav_file:
+                    wav_file.setnchannels(1)  # Mono
+                    wav_file.setsampwidth(2)  # 16-bit
+                    wav_file.setframerate(16000)  # 16kHz
+                    wav_file.writeframes(audio_data)
+            else:
+                # Already a WAV file, just write it
+                with open(temp_filename, "wb") as f:
+                    f.write(audio_data)
             
             # Transcribe using Groq
             with open(temp_filename, "rb") as audio_file:
+                file_data = audio_file.read()
+                logger.info(f"Sending {len(file_data)} bytes to Groq for transcription")
+                
                 transcription = await self.groq_client.audio.transcriptions.create(
-                    file=("audio.wav", audio_file.read()),
+                    file=("audio.wav", file_data),
                     model="whisper-large-v3",
                     response_format="json",
                     language="en"
@@ -120,13 +145,17 @@ class AudioProcessor:
             # Process transcription
             text = transcription.text.strip()
             if text:
+                logger.info(f"Transcribed: {text[:100]}...")
                 await self.process_transcription(session_id, text)
+            else:
+                logger.warning(f"Empty transcription for session {session_id}")
             
             # Clear processed buffer
             session["audio_buffer"] = []
             
         except Exception as e:
             logger.error(f"Transcription error for session {session_id}: {e}")
+            # Don't clear buffer on error - might want to retry
     
     async def process_transcription(self, session_id: str, text: str):
         """Process transcribed text for triggers and save to stream"""
