@@ -3,11 +3,11 @@
 > Target: Working prototype in 1 week
 
 ## Overview
-Build a personal voice assistant that captures thoughts via hardware button toggle, continuously transcribes them, listens for trigger phrases, and saves complete conversation documents to your Obsidian second brain.
+Build a personal voice assistant that captures thoughts, continuously transcribes them, listens for trigger phrases, and saves complete conversation documents to your Obsidian second brain.
 
 ## Core User Flow
-1. **Long press volume up** → Start recording
-2. **Say "stop recording" OR long press volume up** → Stop recording
+1. **Say "start recording** → Start recording
+2. **Say "stop recording"** → Stop recording
 3. **Every 60 seconds** → Subtle audio beep confirms still recording
 4. Audio streams to backend for continuous processing
 5. **Say trigger phrase** → Backend processes with appropriate LLM prompt
@@ -38,8 +38,8 @@ Android App (No UI)
 ## Key Design Decisions
 
 ### Recording Control
-- Long press volume up starts recording
-- "Stop recording" voice command OR long press stops it
+- "start recording" voice command
+- "Stop recording" voice command
 - No automatic timeout - records until explicitly stopped
 - Subtle beep every 60 seconds confirms recording active
 - Notification shows recording status and duration
