@@ -79,24 +79,104 @@ Android App (No UI)
 
 ### 1. Android App Components
 
-**Background Service**
-- Foreground service with persistent notification
-- WebSocket client for streaming audio
-- Local audio buffer (5MB rotating) for disconnections
-- Voice command detection for "stop recording"
-- Error logging to rotating file
+**Architecture**: Wake Word Service + Foreground Recording Service
 
-**Audio Flow**
-```
-Microphone → MediaRecorder → WebSocket (if connected)
-                          ↘ Local Buffer (if disconnected)
-```
+**Core Services**
+
+**WakeWordService (Foreground Service)**
+- Always listening for "Hey Cognition" using Porcupine
+- ~1% battery usage per hour when idle
+- Triggers RecordingService on wake word detection
+- Shows minimal persistent notification: "Extended Cognition - Listening"
+
+**RecordingService (Foreground Service)**
+- Maintains WebSocket connection to backend (`ws://[backend-ip]:8765`)
+- Handles audio recording via MediaRecorder
+- Streams audio chunks in real-time
+- Manages local buffer for disconnection resilience
+- Receives and saves conversation documents
+- Shows detailed notification with recording duration
+
+**Notification UI**
+- **Listening State**: "Extended Cognition - Listening"
+- **Recording State**: "Recording: 2:34" with quick actions:
+  - Stop Recording button
+  - Pause/Resume button
+  - Connection status indicator (green/yellow/red dot)
+- Tapping notification opens minimal settings/status activity
+
+**WebSocketManager**
+- Manages connection lifecycle with automatic reconnection
+- Exponential backoff: 1s → 2s → 4s → 8s → 16s → 32s → 60s
+- Sends audio chunks as base64-encoded JSON
+- Handles all message types:
+  - `session_started` - Store session ID
+  - `status_confirmed` - Update notification
+  - `audio_response` - Play TTS through earbuds
+  - `conversation_document` - Save to Obsidian folder
+- Switches to local buffering on disconnection
+
+**AudioStreamManager**
+- Configures MediaRecorder for optimal settings:
+  - Format: Opus (preferred) or AAC
+  - Sample rate: 16kHz (for speech)
+  - Mono channel
+  - Bitrate: 32kbps
+- Chunks audio into ~100ms segments
+- Maintains 5MB circular buffer for offline recording
+- Porcupine integration for "stop recording" detection
 
 **File Reception**
 - Listen for backend "conversation complete" message
 - Receive markdown content via WebSocket
 - Write to: `/storage/emulated/0/Documents/Obsidian/VaultName/conversations/`
 - Filename: `conversation-YYYY-MM-DD-HHMMSS.md`
+
+**Error Handling & Feedback**
+- **Vibration Patterns**:
+  - Wake word recognized: Short pulse (100ms)
+  - Recording started: Double pulse (100ms × 2)
+  - Connection lost: Three short pulses (50ms × 3)
+  - Recording failed: Long buzz (500ms)
+  - Reconnected: Two medium pulses (200ms × 2)
+- **Visual Feedback**:
+  - Notification color changes (green/yellow/red)
+  - Status text updates in real-time
+- **Audio Feedback**:
+  - Subtle tone on wake word detection
+  - Different tone for stop command
+
+**Connection Flow**
+1. App starts → WakeWordService begins listening
+2. User says "Hey Cognition" → Vibration + tone feedback
+3. RecordingService starts → Connects to WebSocket
+4. Continuous audio streaming begins
+5. Backend processes audio and triggers
+6. TTS responses play automatically
+7. User says "Stop recording" → Recording ends
+8. Conversation document saved to Obsidian
+
+**Error Handling**
+- **Connection lost**: Switch to local recording, queue chunks
+- **Reconnection**: Upload buffered audio, merge transcripts
+- **Recording fails**: Vibrate alert (long buzz), log error
+- **Server errors**: Exponential backoff retry (1s → 60s max)
+
+**Permissions Required**
+- `RECORD_AUDIO` - For microphone access
+- `FOREGROUND_SERVICE` - For background services
+- `INTERNET` - For WebSocket connection
+- `WRITE_EXTERNAL_STORAGE` - For saving documents
+- `VIBRATE` - For haptic feedback
+- `WAKE_LOCK` - To keep wake word detection active
+
+**User Experience**
+- Zero-touch operation: Everything voice controlled
+- Always ready: Wake word detection runs continuously
+- Clear feedback: Vibration + notification shows status
+- Resilient: Automatic reconnection and local buffering
+- Minimal battery impact: ~1% idle, ~5% when recording
+- Natural interaction: Just speak to start/stop
 
 ### 2. Backend Processing
 
