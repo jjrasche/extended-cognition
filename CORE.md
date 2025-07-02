@@ -185,7 +185,7 @@ Data structure representing a complete AI cognition in response to a user though
   - Need: Implement MediaStream API in React
   - Need: WebSocket connection to API Gateway
   - Need: Base64 audio chunk streaming
-
+  
 ### Next Steps (After Blocker)
 1. API Gateway WebSocket handler for audio streams
 2. Audio archival to database
