@@ -171,6 +171,24 @@ Data structure representing a complete AI cognition in response to a user though
   "audio_response": "base64_tts_audio"
 }
 ```
+## 📊 Conversation Data Model
+While thoughts are the atomic unit of AI cognition, conversations provide the broader context:
+
+```json
+{
+  "conversation_id": "uuid",
+  "audio_url": "s3://conversations/2024/12/conv_uuid.wav",
+  "thoughts": [...],  // Embedded for archival
+  "extracted_knowledge": [
+    {
+      "type": "insight|fact|connection",
+      "content": "...",
+      "confidence": 0.9,
+      "references": ["thought_id1", "thought_id2"]
+    }
+  ]
+}
+```
 
 ## 🚧 Current Status & Immediate Priorities
 
